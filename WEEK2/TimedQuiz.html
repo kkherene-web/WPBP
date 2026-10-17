@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Week 2 - 3-Minute Timed Quiz • Business Description</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body { font-family: 'Inter', sans-serif; background-color: #f1f5f9; }
+        .quiz-option { transition: all 0.2s ease; }
+        .quiz-option:hover { border-color: #3b82f6; background-color: #eff6ff; }
+        .quiz-option input[type="radio"]:checked + span { font-weight: 600; color: #1d4ed8; }
+        .sticky-timer { position: sticky; top: 0; z-index: 50; backdrop-filter: blur(8px); }
+    </style>
+</head>
+<body class="text-slate-800 min-h-screen pb-12 pt-6">
+
+    <!-- Top Banner & Sticky Bar -->
+    <div id="sticky-header" class="sticky-timer bg-white/90 border-b border-slate-200 shadow-sm py-3 px-4 mb-6 hidden">
+        <div class="max-w-3xl mx-auto flex items-center justify-between">
+            <div class="flex items-center space-x-2">
+                <span class="text-xs font-semibold uppercase tracking-wider text-slate-500">Student:</span>
+                <span id="display-student-name" class="text-sm font-bold text-slate-800">---</span>
+            </div>
+            <!-- Timer Badge -->
+            <div id="timer-badge" class="flex items-center space-x-2 bg-red-50 text-red-700 px-3 py-1.5 rounded-full border border-red-200 font-mono font-bold text-base shadow-sm">
+                <i class="fa-solid fa-clock animate-pulse text-red-600"></i>
+                <span id="time-display">03:00</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Container -->
+    <div class="max-w-3xl mx-auto px-4">
+
+        <!-- HEADER TITLE -->
+        <div class="bg-gradient-to-r from-blue-900 to-indigo-800 text-white rounded-2xl p-6 mb-6 shadow-md text-center">
+            <span class="inline-block bg-blue-500/30 text-blue-100 text-xs font-semibold uppercase tracking-widest px-3 py-1 rounded-full mb-2">3-Minute Quiz • Assessment</span>
+            <h1 class="text-2xl md:text-3xl font-bold">Writing & Presentation of Business Plans</h1>
+            <p class="text-blue-100 text-sm mt-1">Week 2 Quiz: Business Description & Bright English</p>
+        </div>
+
+        <!-- STEP 1: REGISTRATION FORM -->
+        <div id="registration-card" class="bg-white rounded-2xl border border-slate-200 p-6 md:p-8 shadow-sm">
+            <div class="border-b border-slate-100 pb-4 mb-6">
+                <h2 class="text-xl font-bold text-slate-800 flex items-center">
+                    <i class="fa-solid fa-user-pen text-blue-600 mr-2"></i> Student Registration
+                </h2>
+                <p class="text-slate-500 text-sm mt-1">Please enter your official details before starting the 3-minute timed quiz.</p>
+            </div>
+
+            <form id="student-form" onsubmit="startQuiz(event)" class="space-y-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                    <div>
+                        <label for="first-name" class="block text-xs font-bold text-slate-700 uppercase mb-1">First Name / الاسم</label>
+                        <input type="text" id="first-name" required placeholder="e.g. Mohamed" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                    </div>
+                    <div>
+                        <label for="last-name" class="block text-xs font-bold text-slate-700 uppercase mb-1">Last Name / اللقب</label>
+                        <input type="text" id="last-name" required placeholder="e.g. Benali" class="w-full px-3.5 py-2.5 border border-slate-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 text-sm">
+                    </div>
+                </div>
+
+                <div class="bg-amber-50 border-l-4 border-amber-500 p-4 rounded-r-lg mt-6">
+                    <div class="flex">
+                        <i class="fa-solid fa-triangle-exclamation text-amber-600 text-lg mr-3 mt-0.5"></i>
+                        <div class="text-xs text-amber-800 space-y-1">
+                            <p class="font-bold">Instructions & Rules:</p>
+                            <p>• You have <strong>3 minutes (180 seconds)</strong> to complete 20 True/False questions.</p>
+                            <p>• <strong>Marking System:</strong> Correct +1, Incorrect -1, Unanswered 0.</p>
+                            <p>• Answering all questions is optional.</p>
+                        </div>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-6 rounded-xl shadow-md transition duration-200 flex items-center justify-center space-x-2 text-base mt-6">
+                    <span>Start Timed Quiz Now</span>
+                    <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </form>
+        </div>
+
+        <!-- STEP 2: QUIZ SECTION -->
+        <div id="quiz-card" class="hidden space-y-6">
+            <form id="quiz-form" onsubmit="submitQuiz(event)">
+                <div id="questions-container" class="space-y-4">
+                    <!-- Dynamic Questions -->
+                </div>
+
+                <div class="mt-8">
+                    <button id="submit-btn" type="submit" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3.5 px-6 rounded-xl shadow-md transition duration-200 flex items-center justify-center space-x-2 text-base">
+                        <i class="fa-solid fa-paper-plane"></i>
+                        <span id="submit-btn-text">Submit Answers</span>
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <!-- STEP 3: RESULTS CARD -->
+        <div id="results-card" class="hidden bg-white rounded-2xl border border-slate-200 p-6 md:p-8 shadow-md text-center">
+            <div id="result-icon-container" class="w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-4"></div>
+
+            <h2 id="result-status" class="text-2xl font-bold text-slate-800 mb-1">Quiz Completed!</h2>
+            <p id="result-student-info" class="text-slate-500 text-sm mb-6">Submitted by Student</p>
+
+            <div class="bg-slate-50 rounded-xl border border-slate-100 p-6 mb-6 max-w-sm mx-auto">
+                <span class="text-xs uppercase font-bold text-slate-400 tracking-wider">Your Final Net Score</span>
+                <div class="text-4xl font-extrabold text-blue-600 mt-1 mb-2" id="score-text">0 / 20</div>
+                <div class="text-sm font-semibold text-slate-600" id="percentage-text">0%</div>
+            </div>
+
+            <div id="result-details" class="text-left bg-slate-50 border border-slate-200 rounded-xl p-4 text-xs space-y-2 mb-6"></div>
+
+            <button onclick="window.print()" class="bg-slate-800 hover:bg-slate-900 text-white text-sm font-semibold py-2.5 px-5 rounded-lg shadow inline-flex items-center space-x-2">
+                <i class="fa-solid fa-print"></i>
+                <span>Print or Save Result</span>
+            </button>
+        </div>
+
+    </div>
+
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxfFfsZuuNN-4RPx8K9Yby98nUksp3eeDhw-IiSJFRS7BHTBMUSLf7t16DKtt8GNp6y2Q/exec";
+
+        const questionsData = [
+            { id: 1, text: "A Business Description is a short text about a business.", answer: "True" },
+            { id: 2, text: "An Executive Summary is a long story about a family.", answer: "False" },
+            { id: 3, text: "A Business Description includes the business name, location, owner, and product or service.", answer: "True" },
+            { id: 4, text: "The model business used in Week 2 is called Bright English.", answer: "True" },
+            { id: 5, text: "Bright English is a large hospital.", answer: "False" },
+            { id: 6, text: "Bright English is located in Boumerdes.", answer: "True" },
+            { id: 7, text: "The owner of Bright English is Mr. Ali.", answer: "True" },
+            { id: 8, text: "Bright English offers cars and computers.", answer: "False" },
+            { id: 9, text: "The courses at Bright English are for students and workers.", answer: "True" },
+            { id: 10, text: "The word \"owner\" means a person who has a business.", answer: "True" },
+            { id: 11, text: "The word \"location\" means a product.", answer: "False" },
+            { id: 12, text: "A product is an item that a business sells.", answer: "True" },
+            { id: 13, text: "A service is something a business offers to help customers.", answer: "True" },
+            { id: 14, text: "The sentence \"Our business is called Bright English\" gives the business name.", answer: "True" },
+            { id: 15, text: "The sentence \"It is located in Boumerdes\" talks about the owner.", answer: "False" },
+            { id: 16, text: "The mission of Bright English is to help people improve their English.", answer: "True" },
+            { id: 17, text: "The main objective of Bright English is to provide simple and useful English courses.", answer: "True" },
+            { id: 18, text: "A language centre offers courses.", answer: "True" },
+            { id: 19, text: "Bright English is located in Algiers.", answer: "False" },
+            { id: 20, text: "A Business Description does not include the business name or location.", answer: "False" }
+        ];
+
+        let studentDetails = {};
+        let timerInterval = null;
+        let totalSeconds = 180;
+        let isSubmitted = false;
+
+        window.addEventListener("DOMContentLoaded", function() {
+            if (localStorage.getItem("wpbp_week2_quiz_completed") === "true") {
+                document.getElementById("registration-card").innerHTML = 
+                    '<div class="text-center py-8">' +
+                        '<i class="fa-solid fa-circle-xmark text-red-500 text-5xl mb-4"></i>' +
+                        '<h2 class="text-2xl font-bold text-slate-800">Attempt Already Submitted</h2>' +
+                        '<p class="text-slate-600 text-sm mt-2">You have already completed this assessment. Only one submission is allowed per student.</p>' +
+                    '</div>';
+            }
+        });
+
+        function renderQuestions() {
+            const container = document.getElementById("questions-container");
+            container.innerHTML = "";
+
+            questionsData.forEach(function(q, index) {
+                const qCard = document.createElement("div");
+                qCard.className = "bg-white p-5 rounded-xl border border-slate-200 shadow-sm";
+                qCard.innerHTML = 
+                    '<div class="flex items-start space-x-3 mb-3">' +
+                        '<span class="flex-shrink-0 bg-blue-100 text-blue-800 text-xs font-bold px-2.5 py-1 rounded-md">Q' + (index + 1) + '</span>' +
+                        '<p class="font-medium text-slate-800 text-sm md:text-base">' + q.text + '</p>' +
+                    '</div>' +
+                    '<div class="grid grid-cols-2 gap-3 mt-3">' +
+                        '<label class="quiz-option cursor-pointer border border-slate-200 rounded-lg p-3 flex items-center justify-center space-x-2">' +
+                            '<input type="radio" name="q_' + q.id + '" value="True" class="accent-blue-600 h-4 w-4">' +
+                            '<span class="text-sm font-medium text-slate-700">True</span>' +
+                        '</label>' +
+                        '<label class="quiz-option cursor-pointer border border-slate-200 rounded-lg p-3 flex items-center justify-center space-x-2">' +
+                            '<input type="radio" name="q_' + q.id + '" value="False" class="accent-blue-600 h-4 w-4">' +
+                            '<span class="text-sm font-medium text-slate-700">False</span>' +
+                        '</label>' +
+                    '</div>';
+                container.appendChild(qCard);
+            });
+        }
+
+        function startQuiz(e) {
+            e.preventDefault();
+
+            studentDetails = {
+                firstName: document.getElementById("first-name").value.trim(),
+                lastName: document.getElementById("last-name").value.trim()
+            };
+
+            document.getElementById("display-student-name").textContent = studentDetails.firstName + " " + studentDetails.lastName;
+
+            document.getElementById("registration-card").classList.add("hidden");
+            document.getElementById("sticky-header").classList.remove("hidden");
+            
+            renderQuestions();
+            document.getElementById("quiz-card").classList.remove("hidden");
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+
+            startTimer();
+        }
+
+        function startTimer() {
+            const timeDisplay = document.getElementById("time-display");
+            const timerBadge = document.getElementById("timer-badge");
+
+            timerInterval = setInterval(function() {
+                totalSeconds--;
+
+                let minutes = Math.floor(totalSeconds / 60);
+                let seconds = totalSeconds % 60;
+
+                minutes = minutes < 10 ? "0" + minutes : minutes;
+                seconds = seconds < 10 ? "0" + seconds : seconds;
+
+                timeDisplay.textContent = minutes + ":" + seconds;
+
+                if (totalSeconds <= 60) {
+                    timerBadge.classList.remove("bg-red-50", "text-red-700");
+                    timerBadge.classList.add("bg-red-600", "text-white", "animate-pulse");
+                }
+
+                if (totalSeconds <= 0) {
+                    clearInterval(timerInterval);
+                    alert("⏰ Time is up! Your quiz is automatically being submitted.");
+                    submitQuiz();
+                }
+            }, 1000);
+        }
+
+        async function submitQuiz(e) {
+            if (e) e.preventDefault();
+            if (isSubmitted) return;
+            isSubmitted = true;
+
+            clearInterval(timerInterval);
+
+            const submitBtn = document.getElementById("submit-btn");
+            const submitBtnText = document.getElementById("submit-btn-text");
+            if (submitBtn) submitBtn.disabled = true;
+            if (submitBtnText) submitBtnText.textContent = "Submitting Data...";
+
+            let correctCount = 0;
+            let incorrectCount = 0;
+            let unsubmittedCount = 0;
+            const totalQuestions = questionsData.length;
+
+            questionsData.forEach(function(q) {
+                const selected = document.querySelector('input[name="q_' + q.id + '"]:checked');
+                if (selected) {
+                    if (selected.value === q.answer) {
+                        correctCount++;
+                    } else {
+                        incorrectCount++;
+                    }
+                } else {
+                    unsubmittedCount++;
+                }
+            });
+
+            let netScore = correctCount - incorrectCount;
+            if (netScore < 0) netScore = 0;
+
+            const percentage = Math.round((netScore / totalQuestions) * 100);
+            const timeUsed = 180 - Math.max(0, totalSeconds);
+            const submissionTime = new Date().toLocaleString();
+
+            const payload = JSON.stringify({
+                firstName: studentDetails.firstName,
+                lastName: studentDetails.lastName,
+                testType: "QUIZ - WEEK 2",
+                score: netScore + "/" + totalQuestions,
+                percentage: percentage + "%",
+                timeUsed: timeUsed + "s",
+                submissionTime: submissionTime
+            });
+
+            try {
+                await fetch(SCRIPT_URL, {
+                    method: "POST",
+                    mode: "no-cors",
+                    headers: { "Content-Type": "application/json" },
+                    body: payload
+                });
+            } catch (err) {
+                console.error("Submission error:", err);
+            }
+
+            try {
+                localStorage.setItem("wpbp_week2_quiz_completed", "true");
+            } catch (err) {
+                console.warn("LocalStorage unavailable:", err);
+            }
+
+            document.getElementById("quiz-card").classList.add("hidden");
+            document.getElementById("sticky-header").classList.add("hidden");
+            document.getElementById("results-card").classList.remove("hidden");
+
+            document.getElementById("score-text").textContent = netScore + " / " + totalQuestions;
+            document.getElementById("percentage-text").textContent = "Score Percentage: " + percentage + "%";
+            document.getElementById("result-student-info").textContent = "Student: " + studentDetails.firstName + " " + studentDetails.lastName;
+
+            const iconContainer = document.getElementById("result-icon-container");
+            const statusTitle = document.getElementById("result-status");
+
+            if (percentage >= 50) {
+                iconContainer.className = "w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-4 bg-emerald-100 text-emerald-600";
+                iconContainer.innerHTML = '<i class="fa-solid fa-trophy text-3xl"></i>';
+                statusTitle.textContent = "Congratulations! You Passed";
+            } else {
+                iconContainer.className = "w-20 h-20 mx-auto rounded-full flex items-center justify-center mb-4 bg-red-100 text-red-600";
+                iconContainer.innerHTML = '<i class="fa-solid fa-triangle-exclamation text-3xl"></i>';
+                statusTitle.textContent = "Keep Practicing!";
+            }
+
+            const resultDetails = document.getElementById("result-details");
+            resultDetails.innerHTML = 
+                '<div class="flex justify-between"><strong>First Name:</strong> <span>' + studentDetails.firstName + '</span></div>' +
+                '<div class="flex justify-between"><strong>Last Name:</strong> <span>' + studentDetails.lastName + '</span></div>' +
+                '<div class="flex justify-between"><strong>Test Type:</strong> <span class="font-bold text-sky-600">QUIZ - WEEK 2</span></div>' +
+                '<div class="flex justify-between border-t border-slate-200 pt-1 mt-1"><strong>Correct Answers (+1):</strong> <span class="text-emerald-600 font-bold">' + correctCount + '</span></div>' +
+                '<div class="flex justify-between"><strong>Incorrect Answers (-1):</strong> <span class="text-red-600 font-bold">' + incorrectCount + '</span></div>' +
+                '<div class="flex justify-between"><strong>Unanswered (0):</strong> <span class="text-slate-500 font-bold">' + unsubmittedCount + '</span></div>' +
+                '<div class="flex justify-between border-t border-slate-200 pt-1 mt-1"><strong>Final Net Score:</strong> <span class="font-bold text-blue-600">' + netScore + ' / ' + totalQuestions + '</span></div>' +
+                '<div class="flex justify-between"><strong>Time Used:</strong> <span>' + timeUsed + ' seconds</span></div>';
+
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+    </script>
+</body>
+</html>
