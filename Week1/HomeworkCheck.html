@@ -104,39 +104,47 @@
       { id: 20, q: "Which field focuses on planning and organizing people and resources?", options: ["Management", "Finance", "Economics", "Business"], ans: 0 }
     ];
 
-    // Connected to your WPBP HOMEWORKCHECK Google Sheet
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxfFfsZuuNN-4RPx8K9Yby98nUksp3eeDhw-IiSJFRS7BHTBMUSLf7t16DKtt8GNp6y2Q/exec";
 
     const container = document.getElementById('questionsContainer');
     let startTime = Date.now();
 
-    // Render questions
-    quizData.forEach((item, index) => {
-      const qCard = document.createElement('div');
-      qCard.id = `qCard_${index}`;
-      qCard.className = "bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-4";
-      
-      let optionsHTML = item.options.map((opt, oIdx) => `
-        <label id="optLabel_${index}_${oIdx}" class="opt-label flex items-center gap-3 p-3 rounded-xl border border-slate-200 cursor-pointer transition-colors">
-          <input type="radio" name="q${index}" value="${oIdx}" class="w-4 h-4 text-sky-600 focus:ring-sky-500">
-          <span class="text-sm text-slate-700">${opt}</span>
-        </label>
-      `).join('');
+    function renderQuestions() {
+      container.innerHTML = "";
+      quizData.forEach((item, index) => {
+        const qCard = document.createElement('div');
+        qCard.id = `qCard_${index}`;
+        qCard.className = "bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-4";
+        
+        let optionsHTML = item.options.map((opt, oIdx) => `
+          <label id="optLabel_${index}_${oIdx}" class="opt-label flex items-center gap-3 p-3 rounded-xl border border-slate-200 cursor-pointer transition-colors">
+            <input type="radio" name="q${index}" value="${oIdx}" class="w-4 h-4 text-sky-600 focus:ring-sky-500">
+            <span class="text-sm text-slate-700">${opt}</span>
+          </label>
+        `).join('');
 
-      qCard.innerHTML = `
-        <div class="flex items-start justify-between gap-4">
-          <h3 class="font-semibold text-slate-800 text-base">
-            <span class="text-sky-600 font-bold mr-1">Q${index + 1}.</span>${item.q}
-          </h3>
-          <button type="button" onclick="speakText('${item.q.replace(/'/g, "\\'")}')" class="text-slate-400 hover:text-sky-600 p-1">
-            <i class="fa-solid fa-volume-high"></i>
-          </button>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">${optionsHTML}</div>
-        <div id="feedback_${index}" class="hidden text-xs font-semibold mt-2"></div>
-      `;
-      container.appendChild(qCard);
-    });
+        qCard.innerHTML = `
+          <div class="flex items-start justify-between gap-4">
+            <h3 class="font-semibold text-slate-800 text-base">
+              <span class="text-sky-600 font-bold mr-1">Q${index + 1}.</span> ${item.q}
+            </h3>
+            <button type="button" onclick="speakText('${item.q.replace(/'/g, "\\'")}')" class="text-slate-400 hover:text-sky-600 p-1">
+              <i class="fa-solid fa-volume-high"></i>
+            </button>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">${optionsHTML}</div>
+          <div id="feedback_${index}" class="hidden text-xs font-semibold mt-2"></div>
+        `;
+        container.appendChild(qCard);
+      });
+    }
+
+    // Run question rendering on load
+    document.addEventListener("DOMContentLoaded", renderQuestions);
+    // Fallback if DOMContentLoaded already fired
+    if (document.readyState === "complete" || document.readyState === "interactive") {
+      renderQuestions();
+    }
 
     function speakText(text) {
       if ('speechSynthesis' in window) {
@@ -148,8 +156,10 @@
     }
 
     async function submitHomework() {
-      const firstName = document.getElementById('stdFirstName').value.trim();
-      const lastName = document.getElementById('stdLastName').value.trim();
+      const firstNameInput = document.getElementById('stdFirstName');
+      const lastNameInput = document.getElementById('stdLastName');
+      const firstName = firstNameInput ? firstNameInput.value.trim() : "";
+      const lastName = lastNameInput ? lastNameInput.value.trim() : "";
       const submitBtn = document.getElementById('submitBtn');
       const statusMsg = document.getElementById('statusMessage');
 
@@ -162,12 +172,13 @@
 
       submitBtn.disabled = true;
       submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Calculating Results...`;
-      statusMsg.className = "text-sm text-sky-600 font-medium block";
-      statusMsg.textContent = "Submitting your responses and scoring...";
+      if (statusMsg) {
+        statusMsg.className = "text-sm text-sky-600 font-medium block";
+        statusMsg.textContent = "Submitting your responses and scoring...";
+      }
 
       let score = 0;
 
-      // Grade and highlight questions
       quizData.forEach((item, index) => {
         const selected = document.querySelector(`input[name="q${index}"]:checked`);
         const userVal = selected ? parseInt(selected.value) : -1;
@@ -179,14 +190,70 @@
 
         if (userVal === item.ans) {
           score++;
-          correctLabel.classList.add('correct-opt');
-          feedbackDiv.className = "text-xs font-bold text-emerald-600 block";
-          feedbackDiv.innerHTML = "✓ Correct Answer!";
+          if (correctLabel) correctLabel.classList.add('correct-opt');
+          if (feedbackDiv) {
+            feedbackDiv.className = "text-xs font-bold text-emerald-600 block";
+            feedbackDiv.innerHTML = "✓ Correct Answer!";
+          }
         } else {
           if (userVal !== -1) {
             const wrongLabel = document.getElementById(`optLabel_${index}_${userVal}`);
-            wrongLabel.classList.add('wrong-opt');
+            if (wrongLabel) wrongLabel.classList.add('wrong-opt');
           }
-          correctLabel.classList.add('correct-opt');
-          feedbackDiv.className = "text-xs font-bold text-rose-600 block";
-          feedbackDiv.innerHTML = `✗ Incorrect. Correct Answer: "${item.
+          if (correctLabel) correctLabel.classList.add('correct-opt');
+          if (feedbackDiv) {
+            feedbackDiv.className = "text-xs font-bold text-rose-600 block";
+            feedbackDiv.innerHTML = `✗ Incorrect. Correct Answer: "${item.options[item.ans]}"`;
+          }
+        }
+      });
+
+      const percentageVal = ((score / quizData.length) * 100).toFixed(0);
+      const percentage = `${percentageVal}%`;
+      const submissionTime = new Date().toLocaleString();
+
+      const scoreDisplay = document.getElementById('scoreDisplay');
+      const percentDisplay = document.getElementById('percentDisplay');
+      if (scoreDisplay) scoreDisplay.textContent = `${score}/${quizData.length}`;
+      if (percentDisplay) percentDisplay.textContent = percentage;
+      
+      const banner = document.getElementById('resultsBanner');
+      if (banner) {
+        banner.classList.remove('hidden');
+        banner.scrollIntoView({ behavior: 'smooth' });
+      }
+
+      const payload = {
+        firstName: firstName,
+        lastName: lastName,
+        testType: "HOMEWORKCHECK",
+        score: `${score}/${quizData.length}`,
+        percentage: percentage,
+        timeUsed: `${timeUsedSec}s`,
+        submissionTime: submissionTime
+      };
+
+      try {
+        await fetch(SCRIPT_URL, {
+          method: 'POST',
+          mode: 'no-cors',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(payload)
+        });
+
+        if (statusMsg) {
+          statusMsg.className = "text-sm text-emerald-600 font-bold block";
+          statusMsg.textContent = "✅ Results recorded successfully in your sheet!";
+        }
+        submitBtn.innerHTML = `<i class="fa-solid fa-check"></i> Submitted & Scored`;
+      } catch (err) {
+        if (statusMsg) {
+          statusMsg.className = "text-sm text-amber-600 font-bold block";
+          statusMsg.textContent = "⚠️ Results displayed above, but background sheet sync failed.";
+        }
+        submitBtn.innerHTML = `<i class="fa-solid fa-check"></i> Scored`;
+      }
+    }
+  </script>
+</body>
+</html>
