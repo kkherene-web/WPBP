@@ -82,26 +82,26 @@
 
   <script>
     const quizData = [
-      { id: 1, q: "What is economics primarily about?", options: ["Making money", "Choices with limited resources", "Selling products", "Government policies"], ans: 1 },
-      { id: 2, q: "What does 'economy' refer to?", options: ["The economic system of a country", "The study of resources", "A person who manages money", "An adjective meaning economic"], ans: 0 },
-      { id: 3, q: "What does 'economics' refer to?", options: ["The study of how resources are used", "A business activity", "An adjective", "The economic system"], ans: 0 },
-      { id: 4, q: "What part of speech is 'economic'?", options: ["Verb", "Adverb", "Adjective", "Noun"], ans: 2 },
-      { id: 5, q: "Which sentence uses 'economic' correctly?", options: ["The economic is developing.", "This is an economic problem.", "I study economic.", "She works in economic."], ans: 1 },
-      { id: 6, q: "Microeconomics studies:", options: ["The economy as a whole", "Only inflation", "Small parts of the economy", "Only unemployment"], ans: 2 },
-      { id: 7, q: "Macroeconomics studies:", options: ["One consumer's choice", "The price of one product", "One company's costs", "The economy as a whole"], ans: 3 },
-      { id: 8, q: "Which of the following is a macroeconomics topic?", options: ["A consumer's budget", "The price of a phone", "One company's costs", "Inflation in the country"], ans: 3 },
-      { id: 9, q: "Which of the following is a microeconomics topic?", options: ["A consumer's choice", "Unemployment", "National inflation", "Economic growth"], ans: 0 },
-      { id: 10, q: "What is the key idea of economics?", options: ["Managing people", "Selling products", "Choices with limited resources", "Unlimited resources"], ans: 2 },
-      { id: 11, q: "Which of the following is NOT a resource?", options: ["Workers", "Time", "A football match", "Money"], ans: 2 },
-      { id: 12, q: "Which of the following is an example of a resource?", options: ["Workers", "A holiday", "A birthday party", "A football match"], ans: 0 },
-      { id: 13, q: "What does English help economics students do?", options: ["Only communicate", "Read, communicate, and learn", "Only learn", "Only read"], ans: 1 },
-      { id: 14, q: "What does scarcity mean?", options: ["People have no money", "Resources are limited", "Resources are unlimited", "There are no goods"], ans: 1 },
-      { id: 15, q: "Who is a consumer?", options: ["A person who makes goods", "A person who buys or uses goods and services", "A person who sells products", "A person who organizes workers"], ans: 1 },
-      { id: 16, q: "Who is a producer?", options: ["A person who uses services", "A person who buys food", "A person who plans work", "A person or company that makes goods or provides services"], ans: 3 },
-      { id: 17, q: "Why is English important for economics students?", options: ["To pass exams only", "To travel", "To make money", "To read, communicate, and learn"], ans: 3 },
-      { id: 18, q: "Which field studies how resources are used?", options: ["Economics", "Management", "Business", "Marketing"], ans: 0 },
-      { id: 19, q: "Which field focuses on producing and selling goods or services?", options: ["Business", "Accounting", "Economics", "Management"], ans: 0 },
-      { id: 20, q: "Which field focuses on planning and organizing people and resources?", options: ["Management", "Finance", "Economics", "Business"], ans: 0 }
+      { id: 1, q: "An Executive Summary is:", options: ["a type of machine", "a short text about a business", "a long story about a family"], ans: 1 },
+      { id: 2, q: "The word \"business\" means:", options: ["a project or company", "money", "a customer"], ans: 0 },
+      { id: 3, q: "The word \"customer\" means:", options: ["a city", "a machine", "a person who buys a product or uses a service"], ans: 2 },
+      { id: 4, q: "The word \"service\" means:", options: ["something a business offers to help customers", "a school subject", "a business name"], ans: 0 },
+      { id: 5, q: "The word \"product\" means:", options: ["a location", "an item that a business sells", "a customer"], ans: 1 },
+      { id: 6, q: "The word \"money\" means:", options: ["a business owner", "a product", "cash used to buy or sell things"], ans: 2 },
+      { id: 7, q: "Complete the sentence: Our business is _____ Easy Print.", options: ["calling", "call", "called"], ans: 2 },
+      { id: 8, q: "Complete the sentence: We _____ a printing service.", options: ["offers", "offering", "offer"], ans: 2 },
+      { id: 9, q: "Complete the sentence: Our customers _____ students.", options: ["is", "are", "am"], ans: 1 },
+      { id: 10, q: "Complete the sentence: We make money _____ printing.", options: ["at", "in", "from"], ans: 2 },
+      { id: 11, q: "Easy Print is:", options: ["a printing service", "a hospital", "a restaurant"], ans: 0 },
+      { id: 12, q: "Easy Print is located in:", options: ["Constantine", "Algiers", "Oran"], ans: 1 },
+      { id: 13, q: "Easy Print prints documents for:", options: ["students and workers", "drivers and police officers", "doctors and nurses"], ans: 0 },
+      { id: 14, q: "The customers of Easy Print are:", options: ["students and teachers", "farmers and drivers", "tourists and pilots"], ans: 0 },
+      { id: 15, q: "Easy Print makes money from:", options: ["selling cars", "printing and photocopying", "teaching English"], ans: 1 },
+      { id: 16, q: "Which sentence gives the name of a business?", options: ["Our customers are students.", "We make money from printing.", "Our business is called Easy Print."], ans: 2 },
+      { id: 17, q: "Which sentence talks about customers?", options: ["We offer a service.", "Our customers are students.", "It is in Algiers."], ans: 1 },
+      { id: 18, q: "Which sentence explains the source of money?", options: ["Our business is called Easy Print.", "Our business is in Algiers.", "We make money from printing."], ans: 2 },
+      { id: 19, q: "A good Executive Summary gives:", options: ["only the name of the owner", "only the business location", "important information about a business"], ans: 2 },
+      { id: 20, q: "Which information is important in a simple Executive Summary?", options: ["Only a long personal story", "Only the student's name", "Business name, service, customers, and money"], ans: 2 }
     ];
 
     const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxfFfsZuuNN-4RPx8K9Yby98nUksp3eeDhw-IiSJFRS7BHTBMUSLf7t16DKtt8GNp6y2Q/exec";
@@ -139,9 +139,7 @@
       });
     }
 
-    // Run question rendering on load
     document.addEventListener("DOMContentLoaded", renderQuestions);
-    // Fallback if DOMContentLoaded already fired
     if (document.readyState === "complete" || document.readyState === "interactive") {
       renderQuestions();
     }
