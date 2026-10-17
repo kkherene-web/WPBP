@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Homework Check • Writing & Presentation of Business Plans</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+    body { font-family: 'Inter', sans-serif; background-color: #f8fafc; color: #1e293b; }
+    .opt-label:hover { background-color: #f1f5f9; }
+    .correct-opt { background-color: #dcfce7 !important; border-color: #22c55e !important; font-weight: 600; color: #15803d; }
+    .wrong-opt { background-color: #fee2e2 !important; border-color: #ef4444 !important; font-weight: 600; color: #b91c1c; }
+  </style>
+</head>
+<body class="py-8 px-4 sm:px-6 lg:px-8">
+
+  <div class="max-w-3xl mx-auto space-y-6">
+
+    <!-- Header Card -->
+    <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200">
+      <div class="flex items-center space-x-3 text-sky-600 mb-2">
+        <i class="fa-solid fa-briefcase text-2xl"></i>
+        <span class="text-sm font-bold uppercase tracking-wider">Writing & Presentation of Business Plans</span>
+      </div>
+      <h1 class="text-2xl sm:text-3xl font-bold text-slate-900">Homework Check — Week 1: Executive Summary</h1>
+      <p class="text-slate-600 text-sm mt-1">Complete all 20 questions below and click <b>Submit Homework</b> to view your results.</p>
+    </div>
+
+    <!-- Student Details Form -->
+    <div class="bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-slate-200 space-y-4">
+      <h2 class="text-lg font-bold text-slate-800 flex items-center gap-2">
+        <i class="fa-solid fa-id-card text-sky-600"></i> Student Information
+      </h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">First Name *</label>
+          <input type="text" id="stdFirstName" required placeholder="e.g. Ahmed" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:outline-none text-sm" />
+        </div>
+        <div>
+          <label class="block text-xs font-semibold text-slate-600 uppercase mb-1">Last Name *</label>
+          <input type="text" id="stdLastName" required placeholder="e.g. Ali" class="w-full px-3 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-sky-500 focus:outline-none text-sm" />
+        </div>
+      </div>
+    </div>
+
+    <!-- Results Banner (Initially Hidden) -->
+    <div id="resultsBanner" class="hidden bg-white rounded-2xl p-6 sm:p-8 shadow-sm border border-sky-200 text-center space-y-3 transition-all">
+      <div class="text-4xl" id="resultIcon">🎉</div>
+      <h2 class="text-2xl font-bold text-slate-900" id="resultTitle">Homework Submitted!</h2>
+      <p class="text-slate-600 text-sm" id="resultSubtitle">Here is your score performance breakdown:</p>
+      
+      <div class="inline-flex items-center justify-center gap-6 bg-slate-50 px-6 py-4 rounded-xl border border-slate-200 mt-2">
+        <div>
+          <div class="text-xs font-bold text-slate-500 uppercase">Score</div>
+          <div class="text-2xl font-extrabold text-sky-600" id="scoreDisplay">0/20</div>
+        </div>
+        <div class="h-8 w-px bg-slate-300"></div>
+        <div>
+          <div class="text-xs font-bold text-slate-500 uppercase">Percentage</div>
+          <div class="text-2xl font-extrabold text-emerald-600" id="percentDisplay">0%</div>
+        </div>
+      </div>
+      <p class="text-xs text-slate-500 italic mt-2">Scroll down to review the detailed answers for each question.</p>
+    </div>
+
+    <!-- Quiz Form -->
+    <form id="quizForm" class="space-y-6" onsubmit="return false;">
+      <div id="questionsContainer" class="space-y-6"></div>
+
+      <!-- Submit Section -->
+      <div class="bg-white rounded-2xl p-6 shadow-sm border border-slate-200 text-center space-y-3">
+        <button type="button" id="submitBtn" onclick="submitHomework()" class="w-full sm:w-auto px-8 py-3.5 bg-sky-600 hover:bg-sky-700 text-white font-semibold rounded-xl shadow-md transition-all flex items-center justify-center gap-2 mx-auto">
+          <i class="fa-solid fa-paper-plane"></i> Submit Homework
+        </button>
+        <div id="statusMessage" class="hidden text-sm font-medium"></div>
+      </div>
+    </form>
+
+  </div>
+
+  <script>
+    const quizData = [
+      { id: 1, q: "What is economics primarily about?", options: ["Making money", "Choices with limited resources", "Selling products", "Government policies"], ans: 1 },
+      { id: 2, q: "What does 'economy' refer to?", options: ["The economic system of a country", "The study of resources", "A person who manages money", "An adjective meaning economic"], ans: 0 },
+      { id: 3, q: "What does 'economics' refer to?", options: ["The study of how resources are used", "A business activity", "An adjective", "The economic system"], ans: 0 },
+      { id: 4, q: "What part of speech is 'economic'?", options: ["Verb", "Adverb", "Adjective", "Noun"], ans: 2 },
+      { id: 5, q: "Which sentence uses 'economic' correctly?", options: ["The economic is developing.", "This is an economic problem.", "I study economic.", "She works in economic."], ans: 1 },
+      { id: 6, q: "Microeconomics studies:", options: ["The economy as a whole", "Only inflation", "Small parts of the economy", "Only unemployment"], ans: 2 },
+      { id: 7, q: "Macroeconomics studies:", options: ["One consumer's choice", "The price of one product", "One company's costs", "The economy as a whole"], ans: 3 },
+      { id: 8, q: "Which of the following is a macroeconomics topic?", options: ["A consumer's budget", "The price of a phone", "One company's costs", "Inflation in the country"], ans: 3 },
+      { id: 9, q: "Which of the following is a microeconomics topic?", options: ["A consumer's choice", "Unemployment", "National inflation", "Economic growth"], ans: 0 },
+      { id: 10, q: "What is the key idea of economics?", options: ["Managing people", "Selling products", "Choices with limited resources", "Unlimited resources"], ans: 2 },
+      { id: 11, q: "Which of the following is NOT a resource?", options: ["Workers", "Time", "A football match", "Money"], ans: 2 },
+      { id: 12, q: "Which of the following is an example of a resource?", options: ["Workers", "A holiday", "A birthday party", "A football match"], ans: 0 },
+      { id: 13, q: "What does English help economics students do?", options: ["Only communicate", "Read, communicate, and learn", "Only learn", "Only read"], ans: 1 },
+      { id: 14, q: "What does scarcity mean?", options: ["People have no money", "Resources are limited", "Resources are unlimited", "There are no goods"], ans: 1 },
+      { id: 15, q: "Who is a consumer?", options: ["A person who makes goods", "A person who buys or uses goods and services", "A person who sells products", "A person who organizes workers"], ans: 1 },
+      { id: 16, q: "Who is a producer?", options: ["A person who uses services", "A person who buys food", "A person who plans work", "A person or company that makes goods or provides services"], ans: 3 },
+      { id: 17, q: "Why is English important for economics students?", options: ["To pass exams only", "To travel", "To make money", "To read, communicate, and learn"], ans: 3 },
+      { id: 18, q: "Which field studies how resources are used?", options: ["Economics", "Management", "Business", "Marketing"], ans: 0 },
+      { id: 19, q: "Which field focuses on producing and selling goods or services?", options: ["Business", "Accounting", "Economics", "Management"], ans: 0 },
+      { id: 20, q: "Which field focuses on planning and organizing people and resources?", options: ["Management", "Finance", "Economics", "Business"], ans: 0 }
+    ];
+
+    // Connected to your WPBP HOMEWORKCHECK Google Sheet
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxfFfsZuuNN-4RPx8K9Yby98nUksp3eeDhw-IiSJFRS7BHTBMUSLf7t16DKtt8GNp6y2Q/exec";
+
+    const container = document.getElementById('questionsContainer');
+    let startTime = Date.now();
+
+    // Render questions
+    quizData.forEach((item, index) => {
+      const qCard = document.createElement('div');
+      qCard.id = `qCard_${index}`;
+      qCard.className = "bg-white rounded-2xl p-6 shadow-sm border border-slate-200 space-y-4";
+      
+      let optionsHTML = item.options.map((opt, oIdx) => `
+        <label id="optLabel_${index}_${oIdx}" class="opt-label flex items-center gap-3 p-3 rounded-xl border border-slate-200 cursor-pointer transition-colors">
+          <input type="radio" name="q${index}" value="${oIdx}" class="w-4 h-4 text-sky-600 focus:ring-sky-500">
+          <span class="text-sm text-slate-700">${opt}</span>
+        </label>
+      `).join('');
+
+      qCard.innerHTML = `
+        <div class="flex items-start justify-between gap-4">
+          <h3 class="font-semibold text-slate-800 text-base">
+            <span class="text-sky-600 font-bold mr-1">Q${index + 1}.</span>${item.q}
+          </h3>
+          <button type="button" onclick="speakText('${item.q.replace(/'/g, "\\'")}')" class="text-slate-400 hover:text-sky-600 p-1">
+            <i class="fa-solid fa-volume-high"></i>
+          </button>
+        </div>
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">${optionsHTML}</div>
+        <div id="feedback_${index}" class="hidden text-xs font-semibold mt-2"></div>
+      `;
+      container.appendChild(qCard);
+    });
+
+    function speakText(text) {
+      if ('speechSynthesis' in window) {
+        window.speechSynthesis.cancel();
+        const msg = new SpeechSynthesisUtterance(text);
+        msg.lang = 'en-US';
+        window.speechSynthesis.speak(msg);
+      }
+    }
+
+    async function submitHomework() {
+      const firstName = document.getElementById('stdFirstName').value.trim();
+      const lastName = document.getElementById('stdLastName').value.trim();
+      const submitBtn = document.getElementById('submitBtn');
+      const statusMsg = document.getElementById('statusMessage');
+
+      if (!firstName || !lastName) {
+        alert("Please enter both your First Name and Last Name at the top before submitting!");
+        return;
+      }
+
+      const timeUsedSec = Math.round((Date.now() - startTime) / 1000);
+
+      submitBtn.disabled = true;
+      submitBtn.innerHTML = `<i class="fa-solid fa-spinner fa-spin"></i> Calculating Results...`;
+      statusMsg.className = "text-sm text-sky-600 font-medium block";
+      statusMsg.textContent = "Submitting your responses and scoring...";
+
+      let score = 0;
+
+      // Grade and highlight questions
+      quizData.forEach((item, index) => {
+        const selected = document.querySelector(`input[name="q${index}"]:checked`);
+        const userVal = selected ? parseInt(selected.value) : -1;
+        const correctLabel = document.getElementById(`optLabel_${index}_${item.ans}`);
+        const feedbackDiv = document.getElementById(`feedback_${index}`);
+
+        const inputs = document.querySelectorAll(`input[name="q${index}"]`);
+        inputs.forEach(i => i.disabled = true);
+
+        if (userVal === item.ans) {
+          score++;
+          correctLabel.classList.add('correct-opt');
+          feedbackDiv.className = "text-xs font-bold text-emerald-600 block";
+          feedbackDiv.innerHTML = "✓ Correct Answer!";
+        } else {
+          if (userVal !== -1) {
+            const wrongLabel = document.getElementById(`optLabel_${index}_${userVal}`);
+            wrongLabel.classList.add('wrong-opt');
+          }
+          correctLabel.classList.add('correct-opt');
+          feedbackDiv.className = "text-xs font-bold text-rose-600 block";
+          feedbackDiv.innerHTML = `✗ Incorrect. Correct Answer: "${item.
